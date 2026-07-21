@@ -62,7 +62,6 @@ class ModelAttempt:
     """One concrete model request selected by the fallback router."""
 
     model: str
-    primary_model: str
     provider: str | None
     fallback_index: int
 
@@ -180,7 +179,6 @@ class FallbackProvider(LLMProvider):
             primary_was_attempted = True
             await self._notify_model_attempt(
                 model=primary_model,
-                primary_model=primary_model,
                 provider=None,
                 fallback_index=0,
             )
@@ -272,7 +270,6 @@ class FallbackProvider(LLMProvider):
 
             await self._notify_model_attempt(
                 model=fallback_model,
-                primary_model=primary_model,
                 provider=fallback.provider,
                 fallback_index=idx + 1,
             )
@@ -328,7 +325,6 @@ class FallbackProvider(LLMProvider):
         self,
         *,
         model: str,
-        primary_model: str,
         provider: str | None,
         fallback_index: int,
     ) -> None:
@@ -338,7 +334,6 @@ class FallbackProvider(LLMProvider):
             await self._model_attempt_observer(
                 ModelAttempt(
                     model=model,
-                    primary_model=primary_model,
                     provider=provider,
                     fallback_index=fallback_index,
                 )
